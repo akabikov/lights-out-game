@@ -34,7 +34,7 @@ class Board extends React.Component {
 
   state = {board: this.createBoard(), hasWon: false}
 
-  static defaultProps = {ncols: 5, nrows: 5, chanceLightStartsOn: 0.25}
+  static defaultProps = {ncols: 5, nrows: 5, chanceLightStartsOn: 0}
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
 
@@ -75,14 +75,15 @@ class Board extends React.Component {
     
 
     // win when every cell is turned off
-    hasWon = !board.reduce((accRow, row) => {
-      const rowResult = row.reduce((accCell, cell) => (
-        accCell || cell
-      ), false);
+    // hasWon = !board.reduce((accRow, row) => {
+    //   const rowResult = row.reduce((accCell, cell) => (
+    //     accCell || cell
+    //   ), false);
         
-      return accRow || rowResult;
-    }, false);
+    //   return accRow || rowResult;
+    // }, false);
 
+    hasWon = board.every(row => row.every(cell => !cell));
 
     this.setState({board, hasWon});
   }
