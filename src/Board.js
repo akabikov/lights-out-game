@@ -34,7 +34,7 @@ class Board extends React.Component {
 
   state = {board: this.createBoard(), hasWon: false}
 
-  static defaultProps = {ncols: 5, nrows: 5, chanceLightStartsOn: 0.3}
+  static defaultProps = {ncols: 5, nrows: 5, chanceLightStartsOn: 0}
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
 
@@ -74,9 +74,32 @@ class Board extends React.Component {
     flipCoords.forEach(([y, x]) => flipCell(y, x));
     
     // win when every cell is turned off
-    // TODO: determine is the game has been won
+
+    hasWon = !board.reduce((accRow, row) => {
+
+      const rowResult = row.reduce((accCell, cell) => (
+        accCell || cell
+      ), false);
+        
+      return accRow || rowResult;
+    }, false);
 
     this.setState({board, hasWon});
+  }
+
+  genCells() {
+    return this.state.board.map((row, y) => (
+      <tr key={y}>
+        {row.map((cell, x) => (
+          <Cell 
+            key={`${y}-${x}`} 
+            isLit={cell} 
+            flipCellsAroundMe={this.flipCellsAround} 
+            coord={`${y}-${x}`} 
+          />
+        ))}
+      </tr>
+    ));
   }
 
 
@@ -84,28 +107,19 @@ class Board extends React.Component {
 
   render() {
 
-    // if the game is won, just show a winning msg & render nothing else
-    // TODO
-    // make table board
-    // TODO
-    let {board} = this.state;
+    let {hasWon} = this.state;
 
-    let cells = board.map((row, y) => (
-      <tr key={y}>
-        {row.map((cell, x) => (
-          <Cell key={`${y}-${x}`} isLit={cell} flipCellsAroundMe={this.flipCellsAround} coord={`${y}-${x}`} />
-        ))}
-      </tr>
-    ));
+    let board = <div>
+                  <h1>It works!</h1>
+                  <table><tbody>{this.genCells()}</tbody></table>
+                </div>;
 
     return (
       <div>
-        <h1>It works!</h1>
-        <table>
-          <tbody>
-            {cells}
-          </tbody>
-        </table>
+        {hasWon 
+        ? <div>You Won</div>
+        : board
+        }
       </div>
     );
   }
