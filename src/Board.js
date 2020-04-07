@@ -1,5 +1,5 @@
 /* eslint-disable react/require-render-return */
-import React, {Component} from "react";
+import React from "react";
 import Cell from "./Cell";
 import './Board.css';
 
@@ -30,15 +30,27 @@ import './Board.css';
  *
  **/
 
-class Board extends Component {
+class Board extends React.Component {
 
+  state = {board: this.createBoard(), hasWon: false}
 
+  defaultProps = {ncols: 5, nrows: 5, chanceLightStartsOn: 0.5}
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
 
   createBoard() {
-    let board = [];
-    // TODO: create array-of-arrays of true/false values
+    let {ncols, nrows, chanceLightStartsOn} = this.props;
+    
+    let board = Array(nrows);
+    
+    for (let y = 0; y < board.length; y++) {
+      board[y] = Array(ncols);
+
+      for (let x = 0; x < board[y].length; x++) {
+        board[y][x] = (Math.random() < chanceLightStartsOn);
+      }
+    }
+    
     return board
   }
 
