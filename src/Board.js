@@ -34,7 +34,7 @@ class Board extends React.Component {
 
   state = {board: this.createBoard(), hasWon: false}
 
-  static defaultProps = {ncols: 5, nrows: 5, chanceLightStartsOn: 0}
+  static defaultProps = {ncols: 5, nrows: 5, chanceLightStartsOn: 0.25}
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
 
@@ -73,16 +73,16 @@ class Board extends React.Component {
 
     flipCoords.forEach(([y, x]) => flipCell(y, x));
     
+
     // win when every cell is turned off
-
     hasWon = !board.reduce((accRow, row) => {
-
       const rowResult = row.reduce((accCell, cell) => (
         accCell || cell
       ), false);
         
       return accRow || rowResult;
     }, false);
+
 
     this.setState({board, hasWon});
   }
@@ -107,17 +107,17 @@ class Board extends React.Component {
 
   render() {
 
-    let {hasWon} = this.state;
+    const board = <div>
+                    <h1>Lights out</h1>
+                    <table className="Board"><tbody>{this.genCells()}</tbody></table>
+                  </div>;
 
-    let board = <div>
-                  <h1>It works!</h1>
-                  <table><tbody>{this.genCells()}</tbody></table>
-                </div>;
+    const winMessage = <div className="win-message">You Won</div>;
 
     return (
       <div>
-        {hasWon 
-        ? <div>You Won</div>
+        {this.state.hasWon 
+        ? winMessage
         : board
         }
       </div>
