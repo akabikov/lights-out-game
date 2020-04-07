@@ -56,27 +56,28 @@ class Board extends React.Component {
 
   /** handle changing a cell: update board & determine if winner */
 
-  // flipCellsAround(coord) {
-  //   let {ncols, nrows} = this.props;
-  //   let board = this.state.board;
-  //   let [y, x] = coord.split("-").map(Number);
+  flipCellsAround = coord => {
+    let {ncols, nrows} = this.props;
+    let {board, hasWon} = this.state;
+    let [y, x] = coord.split("-").map(Number);
 
 
-  //   function flipCell(y, x) {
-  //     // if this coord is actually on board, flip it
+    function flipCell(y, x) {
+      // if this coord is actually on board, flip it
+      if (x >= 0 && x < ncols && y >= 0 && y < nrows) {
+        board[y][x] = !board[y][x];
+      }
+    }
+    
+    let flipCoords = [[y, x], [y - 1, x], [y, x + 1], [y + 1, x], [y, x - 1]];
 
-  //     if (x >= 0 && x < ncols && y >= 0 && y < nrows) {
-  //       board[y][x] = !board[y][x];
-  //     }
-  //   }
+    flipCoords.forEach(([y, x]) => flipCell(y, x));
+    
+    // win when every cell is turned off
+    // TODO: determine is the game has been won
 
-  //   // TODO: flip this cell and the cells around it
-
-  //   // win when every cell is turned off
-  //   // TODO: determine is the game has been won
-
-  //   this.setState({board, hasWon});
-  // }
+    this.setState({board, hasWon});
+  }
 
 
   /** Render game board or winning message. */
@@ -92,7 +93,7 @@ class Board extends React.Component {
     let cells = board.map((row, y) => (
       <tr key={y}>
         {row.map((cell, x) => (
-          <Cell key={`${y}-${x}`} isLit={cell} />
+          <Cell key={`${y}-${x}`} isLit={cell} flipCellsAroundMe={this.flipCellsAround} coord={`${y}-${x}`} />
         ))}
       </tr>
     ));
