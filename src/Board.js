@@ -1,4 +1,3 @@
-/* eslint-disable react/require-render-return */
 import React from "react";
 import Cell from "./Cell";
 import './Board.css';
@@ -34,10 +33,9 @@ class Board extends React.Component {
 
   state = {board: this.createBoard(), hasWon: false}
 
-  static defaultProps = {ncols: 5, nrows: 5, chanceLightStartsOn: 0}
+  static defaultProps = {ncols: 5, nrows: 5, chanceLightStartsOn: 0.25}
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
-
   createBoard() {
     let {ncols, nrows, chanceLightStartsOn} = this.props;
     
@@ -55,7 +53,6 @@ class Board extends React.Component {
   }
 
   /** handle changing a cell: update board & determine if winner */
-
   flipCellsAround = coord => {
     let {ncols, nrows} = this.props;
     let {board, hasWon} = this.state;
@@ -73,16 +70,6 @@ class Board extends React.Component {
 
     flipCoords.forEach(([y, x]) => flipCell(y, x));
     
-
-    // win when every cell is turned off
-    // hasWon = !board.reduce((accRow, row) => {
-    //   const rowResult = row.reduce((accCell, cell) => (
-    //     accCell || cell
-    //   ), false);
-        
-    //   return accRow || rowResult;
-    // }, false);
-
     hasWon = board.every(row => row.every(cell => !cell));
 
     this.setState({board, hasWon});
@@ -108,12 +95,12 @@ class Board extends React.Component {
 
   render() {
 
-    const board = <div>
-                    <h1>Lights out</h1>
-                    <table className="Board"><tbody>{this.genCells()}</tbody></table>
-                  </div>;
+    const board = <table className="board"><tbody>{this.genCells()}</tbody></table>;
 
-    const winMessage = <div className="win-message">You Won</div>;
+    const winMessage = <div className="win-message">
+                         <span className="neon">You</span>
+                         <span className="flux">Won</span>
+                       </div>;
 
     return (
       <div>
