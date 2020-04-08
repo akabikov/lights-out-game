@@ -57,18 +57,19 @@ class Board extends React.Component {
     let {ncols, nrows} = this.props;
     let {board, hasWon} = this.state;
     let [y, x] = coord.split("-").map(Number);
-
-
-    function flipCell(y, x) {
-      // if this coord is actually on board, flip it
-      if (x >= 0 && x < ncols && y >= 0 && y < nrows) {
-        board[y][x] = !board[y][x];
-      }
-    }
     
-    let flipCoords = [[y, x], [y - 1, x], [y, x + 1], [y + 1, x], [y, x - 1]];
+    let flipCoords = [
+      [y, x], 
+      [y + 1, x], 
+      [y - 1, x], 
+      [y, x + 1], 
+      [y, x - 1], 
+    ];
 
-    flipCoords.forEach(([y, x]) => flipCell(y, x));
+    flipCoords.forEach(([y, x]) => {
+       const isOnBoard = (x >= 0 && x < ncols && y >= 0 && y < nrows);
+       if (isOnBoard) board[y][x] = !board[y][x];
+    });
     
     hasWon = board.every(row => row.every(cell => !cell));
 
@@ -78,14 +79,16 @@ class Board extends React.Component {
   genCells() {
     return this.state.board.map((row, y) => (
       <tr key={y}>
-        {row.map((cell, x) => (
-          <Cell 
-            key={`${y}-${x}`} 
-            isLit={cell} 
-            flipCellsAroundMe={this.flipCellsAround} 
-            coord={`${y}-${x}`} 
-          />
-        ))}
+        {row.map((cell, x) => {
+          const coord=`${y}-${x}`;
+          return (
+            <Cell 
+              key={coord} 
+              isLit={cell} 
+              flipCellsAroundMe={this.flipCellsAround} 
+              coord={coord} 
+            />)
+        })}
       </tr>
     ));
   }
@@ -95,7 +98,11 @@ class Board extends React.Component {
 
   render() {
 
-    const board = <table className="board"><tbody>{this.genCells()}</tbody></table>;
+    const board = <table className="board">
+                    <tbody>
+                      {this.genCells()}
+                    </tbody>
+                  </table>;
 
     const winMessage = <div className="win-message">
                          <span className="neon">You</span>
