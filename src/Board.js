@@ -78,8 +78,7 @@ class Board extends React.Component {
 
   genCells() {
     return this.state.board.map((row, y) => (
-      <tr key={y}>
-        {row.map((cell, x) => {
+        row.map((cell, x) => {
           const coord=`${y}-${x}`;
           return (
             <Cell 
@@ -88,8 +87,7 @@ class Board extends React.Component {
               flipCellsAroundMe={this.flipCellsAround} 
               coord={coord} 
             />)
-        })}
-      </tr>
+        })
     ));
   }
 
@@ -98,11 +96,9 @@ class Board extends React.Component {
 
   render() {
 
-    const board = <table className="board">
-                    <tbody>
+    const board = <div className="board">
                       {this.genCells()}
-                    </tbody>
-                  </table>;
+                  </div>;
 
     const winMessage = <div className="win-message">
                          <span className="neon">You</span>
@@ -110,12 +106,16 @@ class Board extends React.Component {
                        </div>;
 
     return (
-      <div>
+      <>
         {this.state.hasWon 
         ? winMessage
         : board
         }
-      </div>
+        
+        <div className="rules">
+          <a href="https://en.wikipedia.org/wiki/Lights_Out_(game)#Gameplay">Rules</a>
+        </div>
+      </>
     );
   }
 }
