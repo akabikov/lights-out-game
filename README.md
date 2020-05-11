@@ -14,7 +14,7 @@
 This is a training project to get more practice with React events where the state and events happen in different classes.
 
 ## Rules
-The game consists of a 5 by 5 grid of lights. When the game starts, a random number or a stored pattern of these lights is switched on. Pressing any of the lights will toggle it and the four adjacent lights. The goal of the puzzle is to switch all the lights off.
+The game consists of a 5 by 5 grid of lights. When the game starts, a random number of these lights is switched on. Pressing any of the lights will toggle it and the four adjacent lights. The goal of the puzzle is to switch all the lights off.
 Caution! Some lights-on/lights-off starting configurations may not actually be solvable.
 
 ## Demo
