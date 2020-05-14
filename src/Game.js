@@ -34,7 +34,7 @@ class Game extends React.Component {
 
   state = {board: this.createBoard(), hasWon: false}
 
-  static defaultProps = {ncols: 5, nrows: 5, chanceLightStartsOn: 0}
+  static defaultProps = {ncols: 5, nrows: 5, chanceLightStartsOn: 0.25}
 
   /** create a board nrows high/ncols wide, each cell randomly lit or unlit */
   createBoard() {
